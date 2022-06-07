@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "company_scripts"
+version = "0.1.0"
+description = ""
+authors = ["Dan Ailenei <dan.ailenei@spyhce.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+pytest = "^7.1.2"
+google-api-python-client = "^2.49.0"
+google-auth-httplib2 = "^0.1.0"
+google-auth-oauthlib = "^0.5.1"
+
+[tool.poetry.dev-dependencies]
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
