@@ -7,6 +7,7 @@ import calendar
 
 from email_utils import send_email, gmail_user
 from google_client import get_files_client
+from project_config import config
 
 BASE_DIR = Path(__file__).resolve(strict=True).parent
 
@@ -79,19 +80,19 @@ def archive_files(archive_name, files_dir, dest):
 
 
 def send_archive_to_accountant(archive):
-    accountant_email = 'aileneidan@yahoo.com'
+    accountant_email = config['ACCOUNTANT']['email']
     print(f'Sending archive {archive} to accountant {accountant_email}')
     send_email(gmail_user, [accountant_email], 'Facturi/plati', 'Facturile pe luna asta', files=[archive])
 
 
-def gather_files_archive_and_send_through_email(archive_name, last_month_string, next_month_string):
+def gather_files_archive_and_send_through_email(archive_name, last_month_string, this_month_string):
     drive_controller = GoogleDriveController()
 
     print(f'Downloading files from google drive from {last_month_string}')
     files_dir_path = drive_controller.gather_files_from_dir(last_month_string)
 
-    print(f'Creating directory {next_month_string}')
-    drive_controller.create_dir(next_month_string, drive_controller.get_main_root_directory())
+    print(f'Creating directory {this_month_string}')
+    drive_controller.create_dir(this_month_string, drive_controller.get_main_root_directory())
 
     print(f'Archiving files from {files_dir_path} to {archive_name}')
     archive = archive_files(archive_name, files_dir_path, Path("archived_dir"))
@@ -100,15 +101,15 @@ def gather_files_archive_and_send_through_email(archive_name, last_month_string,
 
 
 def main():
-    today = datetime.date.today()
+    today = datetime.date.today() + datetime.timedelta(days=30)
 
     last_month_string = get_last_day_of_last_month(today).strftime('%B-%Y')
-    next_month_string = get_next_month(today).strftime('%B-%Y')
+    this_month_string = today.strftime('%B-%Y')
 
     now = today.strftime("%d-%B-%Y")
     archive_name = f"payments-{now}"
 
-    gather_files_archive_and_send_through_email(archive_name, last_month_string, next_month_string)
+    gather_files_archive_and_send_through_email(archive_name, last_month_string, this_month_string)
 
 
 if __name__ == "__main__":

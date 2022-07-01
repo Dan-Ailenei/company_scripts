@@ -4,10 +4,8 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from email.utils import formatdate
 from os.path import basename
-import configparser
 
-config = configparser.ConfigParser()
-config.read('credentials.ini')
+from project_config import config
 
 gmail_user = config['CREDENTIALS']['gmail_user']
 gmail_password = config['CREDENTIALS']['gmail_password']
