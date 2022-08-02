@@ -10,6 +10,9 @@ pytest = "^7.1.2"
 google-api-python-client = "^2.49.0"
 google-auth-httplib2 = "^0.1.0"
 google-auth-oauthlib = "^0.5.1"
+pyheif = "^0.7.0"
+whatimage = "^0.0.3"
+pillow = "^9.2.0"
 
 [tool.poetry.dev-dependencies]
 

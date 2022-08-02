@@ -4,8 +4,9 @@ import shutil
 from distutils.archive_util import make_archive
 from pathlib import Path
 import calendar
-
+import whatimage
 from email_utils import send_email, gmail_user
+from file_utils import convert_image_from_heic_to_jpeg
 from google_client import get_files_client
 from project_config import config
 
@@ -85,11 +86,27 @@ def send_archive_to_accountant(archive):
     send_email(gmail_user, [accountant_email], 'Facturi/plati', 'Facturile pe luna asta', files=[archive])
 
 
+def convert_heic_images_to_jpeg(files_dir):
+    for file_path in files_dir.iterdir():
+        with file_path.open('rb') as f:
+            img_bytes = f.read()
+            fmt = whatimage.identify_image(img_bytes)
+            if fmt in ['heic', 'avif']:
+                bytes_io_file = convert_image_from_heic_to_jpeg(img_bytes)
+                name_without_extension = file_path.name.split('.')[0]
+                with open(file_path.parent / Path(f'{name_without_extension}.jpeg'), 'wb') as f:
+                    f.write(bytes_io_file.getvalue())
+
+                file_path.unlink()
+
 def gather_files_archive_and_send_through_email(archive_name, last_month_string, this_month_string):
     drive_controller = GoogleDriveController()
 
     print(f'Downloading files from google drive from {last_month_string}')
     files_dir_path = drive_controller.gather_files_from_dir(last_month_string)
+
+    print(f'Coverting HEIC files files from {files_dir_path} to jpeg')
+    convert_heic_images_to_jpeg(files_dir_path)
 
     print(f'Creating directory {this_month_string}')
     drive_controller.create_dir(this_month_string, drive_controller.get_main_root_directory())
