@@ -118,14 +118,14 @@ def gather_files_archive_and_send_through_email(archive_name, last_month_string,
 
 
 def main():
-    today = datetime.date.today() + datetime.timedelta(days=30)
+    today = datetime.date.today()
 
     last_month_string = get_last_day_of_last_month(today).strftime('%B-%Y')
     this_month_string = today.strftime('%B-%Y')
 
     now = today.strftime("%d-%B-%Y")
     archive_name = f"payments-{now}"
-
+    import pdb;pdb.set_trace()
     gather_files_archive_and_send_through_email(archive_name, last_month_string, this_month_string)
 
 

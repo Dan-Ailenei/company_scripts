@@ -13,6 +13,7 @@ google-auth-oauthlib = "^0.5.1"
 pyheif = "^0.7.0"
 whatimage = "^0.0.3"
 pillow = "^9.2.0"
+ipdb = "^0.13.9"
 
 [tool.poetry.dev-dependencies]
 
