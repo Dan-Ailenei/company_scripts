@@ -125,7 +125,6 @@ def main():
 
     now = today.strftime("%d-%B-%Y")
     archive_name = f"payments-{now}"
-    import pdb;pdb.set_trace()
     gather_files_archive_and_send_through_email(archive_name, last_month_string, this_month_string)
 
 
