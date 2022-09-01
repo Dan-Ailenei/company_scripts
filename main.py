@@ -29,7 +29,7 @@ class GoogleDriveController:
 
     def get_files_from_directory(self, directory_name):
         month_folder_response = self.files_client.list(
-            q=f"name = '{directory_name}'"
+            q=f"name = '{directory_name}' and '16Ww4Q4WZFZK11Nn20wYxbnZJjCEncmMw' in parents"
         ).execute()
 
         month_folder_id = month_folder_response["files"][0]["id"]
